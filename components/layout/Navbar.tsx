@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLocale } from "next-intl";
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -14,6 +13,9 @@ const navLinks = [
   { href: "/about", labelTr: "Hakkımda", labelEn: "About" },
   { href: "/contact", labelTr: "İletişim", labelEn: "Contact" },
 ];
+
+const display = { fontFamily: "'Cormorant Garamond', serif" };
+const font = { fontFamily: "'Jost', sans-serif" };
 
 export default function Navbar() {
   const locale = useLocale();
@@ -27,9 +29,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const getLabel = (link: (typeof navLinks)[0]) =>
-    locale === "tr" ? link.labelTr : link.labelEn;
-
   const isActive = (href: string) => {
     const full = `/${locale}${href === "/" ? "" : href}`;
     return pathname === full || (href !== "/" && pathname.startsWith(full));
@@ -42,49 +41,56 @@ export default function Navbar() {
     <header
       className={cn(
         "fixed top-0 inset-x-0 z-50 transition-all duration-300",
-        scrolled
-          ? "bg-(--cream-50)/95 backdrop-blur-md shadow-sm border-b border-(--cream-200)"
-          : "bg-transparent"
+        scrolled ? "bg-white/95 backdrop-blur-md shadow-sm" : "bg-transparent"
       )}
     >
-      <div className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
-        
+      <div
+        style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}
+        className="flex items-center justify-between h-18"
+      >
         {/* Logo */}
-        <Link href={`/${locale}`} className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-full bg-(--sage-500) flex items-center justify-center group-hover:bg-(--sage-600) transition-colors">
-            <span
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
-              className="text-white text-xl"
-            >
-              H
-            </span>
-          </div>
-          <span
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
-            className="text-2xl text-(--sage-700) font-medium tracking-wide"
+        <Link href={`/${locale}`} className="flex items-center gap-2.5 no-underline">
+          <div
+            style={{
+              width: "38px",
+              height: "38px",
+              borderRadius: "50%",
+              backgroundColor: "#4A7C59",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              ...display,
+              fontSize: "20px",
+              color: "white",
+            }}
           >
+            H
+          </div>
+          <span style={{ ...display, fontSize: "26px", color: "#2D4D38", fontWeight: 500, letterSpacing: "0.04em" }}>
             Helene
           </span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        {/* Desktop nav — centered */}
+        <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={`/${locale}${link.href}`}
+              style={font}
               className={cn(
-                "text-sm tracking-wide transition-colors relative group",
+                "text-sm tracking-wide no-underline transition-colors relative group pb-0.5",
                 isActive(link.href)
                   ? "text-(--sage-600) font-medium"
                   : "text-(--sage-500) hover:text-(--sage-700)"
               )}
-              style={{ fontFamily: "'Jost', sans-serif" }}
             >
-              {getLabel(link)}
+              {locale === "tr"
+                ? link.labelTr
+                : link.labelEn}
               <span
                 className={cn(
-                  "absolute -bottom-1 left-0 h-px bg-(--sage-500) transition-all duration-300",
+                  "absolute -bottom-0.5 left-0 h-px bg-(--sage-500) transition-all duration-300",
                   isActive(link.href) ? "w-full" : "w-0 group-hover:w-full"
                 )}
               />
@@ -92,25 +98,15 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Right side */}
-      <div className="hidden md:flex items-center gap-3 pr-2">
-          {/* Dil değiştirici */}
+        {/* Right — locale switcher only */}
+        <div className="hidden md:flex items-center">
           <Link
             href={localePath}
-            className="text-xs uppercase tracking-widest text-(--sage-400) hover:text-(--sage-600) border border-(--sage-200) hover:border-(--sage-400) rounded-full px-3 py-1 transition-colors"
-            style={{ fontFamily: "'Jost', sans-serif" }}
+            style={font}
+            className="text-xs uppercase tracking-widest text-(--sage-400) hover:text-(--sage-600) border border-(--sage-200) hover:border-(--sage-400) rounded-full px-4 py-1.5 transition-colors no-underline"
           >
             {otherLocale}
           </Link>
-
-          {/* CTA */}
-          <Link
-  href={`/${locale}/contact`}
-  className="inline-flex items-center justify-center h-10 px-6 rounded-full bg-(--sage-600) text-white text-sm hover:bg-(--sage-700) transition-colors"
-  style={{ fontFamily: "'Jost', sans-serif" }}
->
-  {locale === "tr" ? "Randevu Al" : "Book Now"}
-</Link>
         </div>
 
         {/* Mobile hamburger */}
@@ -118,46 +114,38 @@ export default function Navbar() {
           className="md:hidden text-(--sage-600) p-2"
           onClick={() => setOpen(!open)}
         >
-          {open ? <X size={24} /> : <Menu size={24} />}
+          {open ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden bg-(--cream-50) border-t border-(--cream-200) px-6 py-6 space-y-1">
+        <div
+          style={{ backgroundColor: "#FDFBF7", borderTop: "1px solid #F2E8D5", padding: "16px 24px 24px" }}
+        >
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={`/${locale}${link.href}`}
               onClick={() => setOpen(false)}
+              style={{ ...font, borderBottom: "1px solid #F2E8D5" }}
               className={cn(
-                "block py-3 text-base border-b border-(--cream-200) transition-colors",
-                isActive(link.href)
-                  ? "text-(--sage-600) font-medium"
-                  : "text-(--sage-500)"
+                "block py-3 text-sm no-underline transition-colors",
+                isActive(link.href) ? "text-(--sage-600) font-medium" : "text-(--sage-500)"
               )}
-              style={{ fontFamily: "'Jost', sans-serif" }}
             >
-              {getLabel(link)}
+              {locale === "tr" ? link.labelTr : link.labelEn}
             </Link>
           ))}
-          <div className="flex items-center gap-3 pt-4">
+          <div className="pt-4">
             <Link
               href={localePath}
               onClick={() => setOpen(false)}
-              className="text-xs uppercase tracking-widest text-(--sage-400)border `border-(--sage-200) rounded-full px-3 py-1"
-              style={{ fontFamily: "'Jost', sans-serif" }}
+              style={font}
+              className="text-xs uppercase tracking-widest text-(--sage-400) border border-(--sage-200) rounded-full px-4 py-1.5 no-underline"
             >
               {otherLocale}
             </Link>
-            <Link
-  href={`/${locale}/contact`}
-  onClick={() => setOpen(false)}
-  className="inline-flex items-center justify-center h-8 px-4 rounded-full bg-(--sage-600) text-white text-xs hover:bg-(--sage-700) transition-colors"
-  style={{ fontFamily: "'Jost', sans-serif" }}
->
-  {locale === "tr" ? "Randevu Al" : "Book Now"}
-</Link>
           </div>
         </div>
       )}

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 const navLinks = [
@@ -20,48 +19,59 @@ export default function Footer({ locale }: FooterProps) {
   const tr = locale === "tr";
 
   return (
-    <footer className="bg-(--sage-800) text-white">
-      <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
+    <footer style={{ backgroundColor: "#1E3325", color: "white", ...font }}>
+      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "64px 24px 40px" }}>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-
-          {/* Brand */}
+        {/* 3 kolon grid */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "2fr 1fr 1fr",
+            gap: "64px",
+            marginBottom: "48px",
+          }}
+        >
+          {/* Marka */}
           <div>
-            <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 rounded-full bg-(--sage-500) flex items-center justify-center">
-                <span style={display} className="text-white text-xl">H</span>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
+              <div
+                style={{
+                  width: "38px",
+                  height: "38px",
+                  borderRadius: "50%",
+                  backgroundColor: "#4A7C59",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  ...display,
+                  fontSize: "20px",
+                  color: "white",
+                }}
+              >
+                H
               </div>
-              <span style={display} className="text-2xl font-medium tracking-wide">
+              <span style={{ ...display, fontSize: "26px", fontWeight: 500, letterSpacing: "0.04em" }}>
                 Helene
               </span>
             </div>
-            <p style={font} className="text-sm text-white/60 leading-relaxed mb-6 max-w-xs">
+            <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.5)", lineHeight: "1.75", maxWidth: "280px" }}>
               {tr
-                ? "Kanıta dayalı fizyoterapi ile hareket özgürlüğünüzü yeniden kazanın."
-                : "Regain your freedom of movement with evidence-based physiotherapy."}
+                ? "Kanıta dayalı fizyoterapi ve rehabilitasyon hizmetleri."
+                : "Evidence-based physiotherapy and rehabilitation services."}
             </p>
-            <div className="flex gap-3">
-              <a href="#" className="w-10 h-10 rounded-full bg-white/10 hover:bg-(--sage-500) flex items-center justify-center transition-colors">
-                <Mail size={16} className="text-white/70" />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/10 hover:bg-(--sage-500) flex items-center justify-center transition-colors">
-                <Phone size={16} className="text-white/70" />
-              </a>
-            </div>
           </div>
 
-          {/* Quick links */}
+          {/* Sayfalar */}
           <div>
-            <p style={font} className="text-xs uppercase tracking-widest text-(--sage-300) mb-5">
-              {tr ? "Hızlı Bağlantılar" : "Quick Links"}
+            <p style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.2em", color: "#97BE97", marginBottom: "20px" }}>
+              {tr ? "Sayfalar" : "Pages"}
             </p>
-            <ul className="space-y-3">
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={`/${locale}${link.href}`}
-                    style={font}
-                    className="text-sm text-white/60 hover:text-white transition-colors"
+                    style={{ fontSize: "14px", color: "rgba(255,255,255,0.55)", textDecoration: "none" }}
                   >
                     {tr ? link.labelTr : link.labelEn}
                   </Link>
@@ -70,36 +80,32 @@ export default function Footer({ locale }: FooterProps) {
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* İletişim */}
           <div>
-            <p style={font} className="text-xs uppercase tracking-widest text-(--sage-300) mb-5">
+            <p style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.2em", color: "#97BE97", marginBottom: "20px" }}>
               {tr ? "İletişim" : "Contact"}
             </p>
-            <div className="space-y-4">
-              <a href="tel:+902125550000" style={font} className="flex items-center gap-3 text-sm text-white/60 hover:text-white transition-colors">
-                <Phone size={15} className="text-(--sage-400)" />
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.55)" }}>
                 +90 (212) 555 00 00
-              </a>
-              <a href="mailto:info@helene.com.tr" style={font} className="flex items-center gap-3 text-sm text-white/60 hover:text-white transition-colors">
-                <Mail size={15} className="text-(--sage-400)" />
+              </p>
+              <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.55)" }}>
                 info@helene.com.tr
-              </a>
-              <div style={font} className="flex items-center gap-3 text-sm text-white/60">
-                <MapPin size={15} className="text-(--sage-400)" />
+              </p>
+              <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.55)" }}>
                 Kadıköy, İstanbul
-              </div>
+              </p>
             </div>
           </div>
-
         </div>
 
-        <Separator className="bg-white/10 mb-8" />
+        <Separator style={{ backgroundColor: "rgba(255,255,255,0.1)", marginBottom: "28px" }} />
 
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <p style={font} className="text-xs text-white/40">
-            © 2025 Helene {tr ? "Fizyoterapi. Tüm hakları saklıdır." : "Physiotherapy. All rights reserved."}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.25)" }}>
+            © 2025 Helene {tr ? "Fizyoterapi" : "Physiotherapy"}
           </p>
-          <p style={font} className="text-xs text-white/30">
+          <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.2)" }}>
             {tr ? "İstanbul'da yapıldı" : "Made in Istanbul"} 🌿
           </p>
         </div>

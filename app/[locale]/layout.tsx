@@ -19,15 +19,12 @@ export default async function LocaleLayout({
 
  return (
   <NextIntlClientProvider locale={locale} messages={messages}>
-    {/* Flex yapısı: Sütun dizilimi ve minimum tam ekran yüksekliği */}
-    <div className="flex flex-col min-h-screen">
+    {/* w-full ekleyerek kapsayıcının tüm ekranı kapladığından emin oluyoruz */}
+    <div className="flex flex-col min-h-screen w-full overflow-x-hidden">
       <Navbar />
-      
-      {/* 'flex-grow' main içeriğin kalan tüm boşluğu doldurmasını sağlar */}
-      <main className="grow">
+      <main className="grow w-full">
         {children}
       </main>
-      
       <Footer locale={locale} />
     </div>
   </NextIntlClientProvider>
